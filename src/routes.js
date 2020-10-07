@@ -45,7 +45,7 @@ const routes = {
         Groups,
         (detail) => {
             if (get(user) == '') {
-                return true;
+                return replace('signin');
             } else {
                 return true
             }

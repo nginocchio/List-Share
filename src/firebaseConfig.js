@@ -2,7 +2,8 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
-const firebaseConfig = {
+
+let firebaseConfig = {
     apiKey: "AIzaSyAT9ywnspjDSSt4zghfHNnYuBrwmUjIV9o",
     authDomain: "listshare-a3375.firebaseapp.com",
     databaseURL: "https://listshare-a3375.firebaseio.com",
@@ -12,6 +13,15 @@ const firebaseConfig = {
     appId: "1:219850576286:web:a9e981c34c23aa9b87c68f",
     measurementId: "G-7ZS1NYNTRL"
 };
+
 firebase.initializeApp(firebaseConfig);
-export const db = firebase.firestore();
-export const auth = firebase.auth();
+export let db = firebase.firestore();
+export let auth = firebase.auth();
+
+
+if (location.hostname === 'localhost') {
+    db.settings({
+        host: 'localhost:8080',
+        ssl: false
+    })
+}

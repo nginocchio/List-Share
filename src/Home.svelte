@@ -10,7 +10,7 @@
     <div class="gradient">
         <Row class="align-items-center">
             <Col class="text-left" sm={{ size: 8, offset: 2 }} md={{ size: 6, offset: 3}} lg={{ size: 3, offset: 3}} >
-                <h1 class="text-white">Always stay on the same page with ListShare</h1>       
+                <h1 class="text-white">Always stay on the same page with List Share</h1>       
                 <p class="text-white">
                     Whether you are tracking your groceries, or completing tasks for your next sprint.
                     Always stay on track with ListShare. The collaboration tool for the 21st century.

@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+  	//match logged in user doc in users collection
+  	match /users/{userId} {
+    	allow create: if request.auth != null;
+      allow update: if userId == request.auth.uid;
+      allow read;
+      allow delete: if false;
+  	}
+    
+    // match docs in the groups collection
+    match /groups/{groupId} {
+      // get the members of the group
+      allow read, create: if request.auth.uid != null;
+      function memberData() {
+        return get(/databases/$(database)/documents/groups/$(groupId)).data;
+      }
+      allow update: if request.auth.uid in resource.data.members;
+      allow delete: if request.auth.uid == resource.data.owner;
+      
+      match /tasks/{taskId} {
+      	allow read, write: if request.auth.uid in memberData().members;
+      }
+    }
+  }
+}

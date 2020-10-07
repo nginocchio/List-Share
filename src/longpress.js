@@ -1,6 +1,11 @@
 export const longpress = (node, duration) => {  
     let timer; 
-    const handleMousedown = () => {  
+    // const isTouchable = 'ontouchstart' in window;
+    const isTouchable = window.matchMedia("(pointer: coarse)").matches;
+    const eventStart = isTouchable ? 'touchstart' : 'mousedown';
+    const eventEnd = isTouchable ? 'touchend' : 'mouseup';
+
+    const handleMousedown = (e) => {
       timer = setTimeout(() => {  
         node.dispatchEvent(new CustomEvent("longpress"));  
       }, duration);  
@@ -9,14 +14,20 @@ export const longpress = (node, duration) => {
     const handleMouseup = () => {  
       clearTimeout(timer);  
     }; 
+
+    const handleTouchMove = () => {
+      clearTimeout(timer);  
+    };
   
-    node.addEventListener("mousedown", handleMousedown);  
-    node.addEventListener("mouseup", handleMouseup); return {  
+    node.addEventListener(eventStart, handleMousedown);  
+    if (isTouchable) node.addEventListener('touchmove', handleTouchMove);
+    node.addEventListener(eventEnd, handleMouseup); return {  
       destroy() {  
-        node.removeEventListener("mousedown", handleMousedown);  
-        node.removeEventListener("mouseup", handleMouseup);  
+        node.removeEventListener(eventStart, handleMousedown);  
+        node.removeEventListener(eventEnd, handleMouseup);  
+        if (isTouchable) node.removeEventListener('touchmove', handleTouchMove);
       },  
-      update(newDuration) {  
+      update(newDuration) {
         duration = newDuration;  
       }  
     };  
